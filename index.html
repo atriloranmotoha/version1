@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大创项目入门路径生成工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>大创项目入门路径生成工具</h1>
+            <p class="subtitle">帮助低年级学生快速入门创新项目</p>
+        </header>
+
+        <main>
+            <section id="project-input" class="section">
+                <h2>填写项目信息</h2>
+                <form id="project-form" class="project-form">
+                    <div class="form-group">
+                        <label for="project-name">项目名称 <span class="required">*</span></label>
+                        <input type="text" id="project-name" name="projectName" placeholder="例如：智能客服机器人" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-description">项目产品要求 <span class="required">*</span></label>
+                        <textarea id="project-description" name="projectDescription" rows="4" placeholder="描述你的项目需要实现什么功能，解决什么问题..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>项目涉及的技术领域 <span class="required">*</span></label>
+                        <p class="hint">选择与你项目相关的技术领域（可多选）</p>
+                        <div class="checkbox-grid" id="tech-fields">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="llm">
+                                <span class="checkbox-label">大语言模型(LLM)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="rag">
+                                <span class="checkbox-label">RAG知识库</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="agent">
+                                <span class="checkbox-label">AI智能体</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="cv">
+                                <span class="checkbox-label">计算机视觉</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="nlp">
+                                <span class="checkbox-label">自然语言处理</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="web">
+                                <span class="checkbox-label">Web开发</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="database">
+                                <span class="checkbox-label">数据库</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="techField" value="python">
+                                <span class="checkbox-label">Python编程</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="current-skills">你目前已掌握的技能</label>
+                        <textarea id="current-skills" name="currentSkills" rows="3" placeholder="例如：有Python基础，了解HTML/CSS..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="timeline">期望完成时间</label>
+                        <select id="timeline" name="timeline">
+                            <option value="4">4周</option>
+                            <option value="6">6周</option>
+                            <option value="8" selected>8周</option>
+                            <option value="12">12周</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">生成学习路径</button>
+                </form>
+            </section>
+
+            <section id="learning-path" class="section hidden">
+                <div class="path-header">
+                    <button class="btn-back" id="btn-back">← 返回修改</button>
+                    <h2 id="project-title"></h2>
+                    <p id="project-description-display" class="project-desc"></p>
+                    <div id="project-skills" class="requirements"></div>
+                </div>
+                
+                <div class="progress-overview" id="progress-overview"></div>
+                
+                <div class="timeline" id="timeline">
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>专为低年级计算机专业学生设计 | 所有学习资源均免费</p>
+        </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
