@@ -1,3 +1,6 @@
+const SUPABASE_URL = 'https://cickmixswbwhatikgwfj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__PhFrmzv-0RxCWSmaJDpPQ_bOSQXZJN';
+
 const RESOURCE_LIBRARY = {
     python: {
         name: 'Python编程',
@@ -698,6 +701,25 @@ function getCurrentProject() {
 
 function saveCurrentProject(project) {
     localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(project));
+    
+    if (project && project.name) {
+        fetch(`${SUPABASE_URL}/rest/v1/learning_paths`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            },
+            body: JSON.stringify({
+                project_name: project.name,
+                project_description: project.description,
+                tech_fields: project.techFields || [],
+                current_skills: project.currentSkills || '',
+                timeline: project.timeline || '',
+                learning_path: project
+            })
+        }).catch(err => console.error('Supabase save error:', err));
+    }
 }
 
 function toggleResourceComplete(projectId, stageIndex, moduleIndex, resourceIndex) {
