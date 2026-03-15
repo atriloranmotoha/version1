@@ -702,7 +702,10 @@ function getCurrentProject() {
 function saveCurrentProject(project) {
     localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(project));
     
+    console.log('Saving project:', project);
+    
     if (project && project.name) {
+        console.log('Sending to Supabase...');
         fetch(`${SUPABASE_URL}/rest/v1/learning_paths`, {
             method: 'POST',
             headers: {
@@ -718,7 +721,21 @@ function saveCurrentProject(project) {
                 timeline: project.timeline || '',
                 learning_path: project
             })
-        }).catch(err => console.error('Supabase save error:', err));
+        })
+        .then(response => {
+            console.log('Supabase response:', response.status);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Supabase error:', text);
+                    throw new Error(text);
+                });
+            }
+            return response.json();
+        })
+        .then(data => console.log('Saved to Supabase:', data))
+        .catch(err => console.error('Supabase save error:', err));
+    } else {
+        console.log('No project name, skipping Supabase save');
     }
 }
 
