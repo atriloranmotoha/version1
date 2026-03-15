@@ -107,5 +107,29 @@
 
     <script src="data.js?v=2"></script>
     <script src="app.js?v=2"></script>
+    <script>
+        // 测试 Supabase 连接
+        console.log('Page loaded, testing Supabase...');
+        console.log('SUPABASE_URL:', typeof SUPABASE_URL !== 'undefined' ? SUPABASE_URL : 'not defined');
+        console.log('SUPABASE_KEY:', typeof SUPABASE_KEY !== 'undefined' ? 'defined' : 'not defined');
+        
+        // 测试保存功能
+        window.testSave = function() {
+            const testProject = {
+                name: '测试项目',
+                description: '测试描述',
+                techFields: ['python'],
+                currentSkills: '无',
+                timeline: '4'
+            };
+            console.log('Testing save with:', testProject);
+            if (typeof saveCurrentProject === 'function') {
+                saveCurrentProject(testProject);
+                console.log('saveCurrentProject called');
+            } else {
+                console.error('saveCurrentProject not found');
+            }
+        };
+    </script>
 </body>
 </html>

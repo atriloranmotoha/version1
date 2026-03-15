@@ -730,9 +730,14 @@ function saveCurrentProject(project) {
                     throw new Error(text);
                 });
             }
-            return response.json();
+            console.log('Saved to Supabase successfully!');
+            return response.text().then(text => text ? JSON.parse(text) : {});
         })
-        .then(data => console.log('Saved to Supabase:', data))
+        .then(data => {
+            if (data && Object.keys(data).length > 0) {
+                console.log('Supabase data:', data);
+            }
+        })
         .catch(err => console.error('Supabase save error:', err));
     } else {
         console.log('No project name, skipping Supabase save');
