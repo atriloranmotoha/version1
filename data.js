@@ -878,6 +878,7 @@ function generateLearningPath(projectData) {
         id: 'custom_' + Date.now(),
         name: projectName,
         description: projectDescription,
+        techFields: techFields,
         requirements: Array.from(allFields).map(f => RESOURCE_LIBRARY[f]?.name || f),
         currentSkills: currentSkills,
         timeline: totalWeeks,
