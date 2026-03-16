@@ -419,6 +419,12 @@
                     <div class="form-group">
                         <label for="projDesc">项目产品要求 <span class="required">*</span></label>
                         <textarea id="projDesc" name="projDesc" rows="4" placeholder="描述你的项目需要实现什么功能，解决什么问题..." required></textarea>
+                        <button type="button" id="optimizeDescBtn" style="margin-top: 10px; padding: 8px 16px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">🤖 AI优化描述</button>
+                        <div id="optimizedDesc" style="margin-top: 10px; padding: 10px; background-color: #f0f8ff; border-radius: 4px; display: none;">
+                            <h4>优化后的描述：</h4>
+                            <p id="optimizedDescText"></p>
+                            <button type="button" id="applyOptimizedBtn" style="margin-top: 10px; padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">应用此描述</button>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -794,6 +800,13 @@
         // 应用状态
         let currentPath = null;
         
+        // AI API 配置
+        const API_CONFIG = {
+            key: 'sk-c189246f01324661a524a7b0c9fb9918',
+            baseUrl: 'https://api.deepseek.com',
+            model: 'deepseek-chat'
+        };
+        
         // 初始化
         function initApp() {
             // 清除所有存储
@@ -828,6 +841,105 @@
             // 返回按钮
             const backBtn = document.getElementById('backBtn');
             backBtn.addEventListener('click', goBack);
+            
+            // AI优化按钮
+            const optimizeDescBtn = document.getElementById('optimizeDescBtn');
+            optimizeDescBtn.addEventListener('click', optimizeProjectDescription);
+            
+            // 应用优化描述按钮
+            const applyOptimizedBtn = document.getElementById('applyOptimizedBtn');
+            applyOptimizedBtn.addEventListener('click', applyOptimizedDescription);
+        }
+        
+        // AI优化项目描述
+        async function optimizeProjectDescription() {
+            const projectName = document.getElementById('projName').value.trim();
+            const projectDesc = document.getElementById('projDesc').value.trim();
+            
+            if (!projectName || !projectDesc) {
+                alert('请先填写项目名称和描述');
+                return;
+            }
+            
+            // 显示加载状态
+            const optimizeBtn = document.getElementById('optimizeDescBtn');
+            const originalText = optimizeBtn.textContent;
+            optimizeBtn.textContent = '优化中...';
+            optimizeBtn.disabled = true;
+            
+            try {
+                const optimizedDesc = await callAIForOptimization(projectName, projectDesc);
+                
+                // 显示优化结果
+                document.getElementById('optimizedDescText').textContent = optimizedDesc;
+                document.getElementById('optimizedDesc').style.display = 'block';
+            } catch (error) {
+                console.error('AI优化失败:', error);
+                alert('AI优化失败，请检查API配置或网络连接');
+            } finally {
+                // 恢复按钮状态
+                optimizeBtn.textContent = originalText;
+                optimizeBtn.disabled = false;
+            }
+        }
+        
+        // 调用AI API进行描述优化
+        async function callAIForOptimization(projectName, projectDesc) {
+            const systemPrompt = `你是一个专业的项目分析师，擅长将学生项目描述优化为更专业、清晰、具体的技术文档。
+
+优化要求：
+1. 保持原有的项目核心功能和目标
+2. 提高描述的专业性和技术性
+3. 明确项目的技术需求和实现路径
+4. 分析项目可能涉及的技术领域，不仅限于用户选择的领域
+5. 优化后的描述应该结构清晰，逻辑连贯
+6. 输出语言为中文
+
+请直接返回优化后的完整描述，不要有任何引言或解释。`;
+            
+            const userPrompt = `项目名称：${projectName}
+
+原始描述：${projectDesc}`;
+            
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_CONFIG.key}`
+                    },
+                    body: JSON.stringify({
+                        model: API_CONFIG.model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`API请求失败: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
+                }
+                
+                const data = await response.json();
+                if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
+                    throw new Error('API返回格式错误');
+                }
+                return data.choices[0].message.content.trim();
+            } catch (error) {
+                console.error('API调用详细错误:', error);
+                throw error;
+            }
+        }
+        
+        // 应用优化后的描述
+        function applyOptimizedDescription() {
+            const optimizedDesc = document.getElementById('optimizedDescText').textContent;
+            document.getElementById('projDesc').value = optimizedDesc;
+            document.getElementById('optimizedDesc').style.display = 'none';
         }
         
         function handleFormSubmit(event) {
