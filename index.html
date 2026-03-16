@@ -419,11 +419,30 @@
                     <div class="form-group">
                         <label for="projDesc">项目产品要求 <span class="required">*</span></label>
                         <textarea id="projDesc" name="projDesc" rows="4" placeholder="描述你的项目需要实现什么功能，解决什么问题..." required></textarea>
-                        <button type="button" id="optimizeDescBtn" style="margin-top: 10px; padding: 8px 16px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">🤖 AI优化描述</button>
+                        <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+                            <button type="button" id="optimizeDescBtn" style="padding: 8px 16px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">🤖 AI优化描述</button>
+                            <button type="button" id="apiConfigBtn" style="padding: 8px 16px; background-color: #f1f1f1; color: #333; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">⚙️ API配置</button>
+                        </div>
                         <div id="optimizedDesc" style="margin-top: 10px; padding: 10px; background-color: #f0f8ff; border-radius: 4px; display: none;">
                             <h4>优化后的描述：</h4>
                             <p id="optimizedDescText"></p>
                             <button type="button" id="applyOptimizedBtn" style="margin-top: 10px; padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">应用此描述</button>
+                        </div>
+                    </div>
+                    
+                    <!-- API配置模态框 -->
+                    <div id="apiConfigModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;">
+                        <div style="background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 100%; margin: 20px;">
+                            <h3 style="margin-bottom: 20px;">API配置</h3>
+                            <div class="form-group">
+                                <label for="apiKey">DeepSeek API密钥</label>
+                                <input type="password" id="apiKey" name="apiKey" placeholder="sk-..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; font-family: inherit;">
+                                <p style="margin-top: 5px; font-size: 14px; color: #666;">API密钥将存储在本地，不会上传到服务器</p>
+                            </div>
+                            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                                <button type="button" id="cancelApiConfig" style="padding: 8px 16px; background-color: #f1f1f1; color: #333; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">取消</button>
+                                <button type="button" id="saveApiConfig" style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">保存</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -801,8 +820,8 @@
         let currentPath = null;
         
         // AI API 配置
-        const API_CONFIG = {
-            key: 'sk-c189246f01324661a524a7b0c9fb9918',
+        let API_CONFIG = {
+            key: localStorage.getItem('ai_api_key') || '',
             baseUrl: 'https://api.deepseek.com',
             model: 'deepseek-chat'
         };
@@ -849,10 +868,59 @@
             // 应用优化描述按钮
             const applyOptimizedBtn = document.getElementById('applyOptimizedBtn');
             applyOptimizedBtn.addEventListener('click', applyOptimizedDescription);
+            
+            // API配置按钮
+            const apiConfigBtn = document.getElementById('apiConfigBtn');
+            apiConfigBtn.addEventListener('click', openApiConfigModal);
+            
+            // 取消API配置
+            const cancelApiConfig = document.getElementById('cancelApiConfig');
+            cancelApiConfig.addEventListener('click', closeApiConfigModal);
+            
+            // 保存API配置
+            const saveApiConfig = document.getElementById('saveApiConfig');
+            saveApiConfig.addEventListener('click', saveApiConfigSettings);
+        }
+        
+        // 打开API配置模态框
+        function openApiConfigModal() {
+            // 填充当前API密钥
+            document.getElementById('apiKey').value = API_CONFIG.key;
+            // 显示模态框
+            document.getElementById('apiConfigModal').style.display = 'flex';
+        }
+        
+        // 关闭API配置模态框
+        function closeApiConfigModal() {
+            document.getElementById('apiConfigModal').style.display = 'none';
+        }
+        
+        // 保存API配置
+        function saveApiConfigSettings() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (apiKey) {
+                // 存储API密钥到本地存储
+                localStorage.setItem('ai_api_key', apiKey);
+                // 更新API配置
+                API_CONFIG.key = apiKey;
+                // 关闭模态框
+                closeApiConfigModal();
+                // 显示成功消息
+                alert('API密钥已保存');
+            } else {
+                alert('请输入API密钥');
+            }
         }
         
         // AI优化项目描述
         async function optimizeProjectDescription() {
+            // 检查API密钥
+            if (!API_CONFIG.key) {
+                alert('请先配置API密钥');
+                openApiConfigModal();
+                return;
+            }
+            
             const projectName = document.getElementById('projName').value.trim();
             const projectDesc = document.getElementById('projDesc').value.trim();
             
