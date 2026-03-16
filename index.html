@@ -3,8 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大创项目入门路径生成工具</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>全新开始 - 大创项目入门路径生成工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+        
+        .required {
+            color: red;
+        }
+        
+        .hint {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .path-header {
+            margin-bottom: 20px;
+        }
+        
+        .btn-back {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .btn-back:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .project-desc {
+            margin: 10px 0;
+            color: #666;
+        }
+        
+        .requirements {
+            margin: 20px 0;
+        }
+        
+        .requirements h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .requirements ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        
+        .requirements li {
+            background-color: #f9f9f9;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        
+        .current-skills {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f5e8;
+            border-radius: 4px;
+        }
+        
+        .progress-overview {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .progress-overview h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            text-align: right;
+        }
+        
+        .timeline {
+            margin-top: 30px;
+        }
+        
+        .stage {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .stage-header {
+            background-color: #f5f5f5;
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stage-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .stage-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .stage-week {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stage-duration {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stage-toggle {
+            background: none;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .stage-content {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .stage-goal {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .progress-section {
+            margin-bottom: 20px;
+        }
+        
+        .progress-section h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .module-list {
+            margin-top: 20px;
+        }
+        
+        .module {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .module h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .module-goal {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .resource-list {
+            margin-top: 15px;
+        }
+        
+        .resource {
+            margin-bottom: 10px;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .resource-icon {
+            font-size: 24px;
+            min-width: 30px;
+        }
+        
+        .resource-info {
+            flex: 1;
+        }
+        
+        .resource-title {
+            margin-bottom: 5px;
+        }
+        
+        .resource-title a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .resource-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .resource-meta {
+            margin: 5px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .resource-tag {
+            background-color: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .resource-reason {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .checklist-item {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .collapsed {
+            display: none;
+        }
+        
+        .stage-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .debug-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,66 +407,67 @@
         </header>
 
         <main>
-            <section id="project-input" class="section">
+            <!-- 输入表单部分 -->
+            <section id="input-section" class="section">
                 <h2>填写项目信息</h2>
-                <form id="project-form" class="project-form">
+                <form id="project-form">
                     <div class="form-group">
-                        <label for="project-name">项目名称 <span class="required">*</span></label>
-                        <input type="text" id="project-name" name="projectName" placeholder="例如：智能客服机器人" required>
+                        <label for="projName">项目名称 <span class="required">*</span></label>
+                        <input type="text" id="projName" name="projName" placeholder="例如：智能客服机器人" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="project-description">项目产品要求 <span class="required">*</span></label>
-                        <textarea id="project-description" name="projectDescription" rows="4" placeholder="描述你的项目需要实现什么功能，解决什么问题..." required></textarea>
+                        <label for="projDesc">项目产品要求 <span class="required">*</span></label>
+                        <textarea id="projDesc" name="projDesc" rows="4" placeholder="描述你的项目需要实现什么功能，解决什么问题..." required></textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>项目涉及的技术领域 <span class="required">*</span></label>
                         <p class="hint">选择与你项目相关的技术领域（可多选）</p>
-                        <div class="checkbox-grid" id="tech-fields">
+                        <div class="checkbox-grid">
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="llm">
+                                <input type="checkbox" name="tech" value="python">
+                                <span class="checkbox-label">Python编程</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="tech" value="llm">
                                 <span class="checkbox-label">大语言模型(LLM)</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="rag">
+                                <input type="checkbox" name="tech" value="rag">
                                 <span class="checkbox-label">RAG知识库</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="agent">
+                                <input type="checkbox" name="tech" value="agent">
                                 <span class="checkbox-label">AI智能体</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="cv">
+                                <input type="checkbox" name="tech" value="cv">
                                 <span class="checkbox-label">计算机视觉</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="nlp">
+                                <input type="checkbox" name="tech" value="nlp">
                                 <span class="checkbox-label">自然语言处理</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="web">
+                                <input type="checkbox" name="tech" value="web">
                                 <span class="checkbox-label">Web开发</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="database">
+                                <input type="checkbox" name="tech" value="database">
                                 <span class="checkbox-label">数据库</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="techField" value="python">
-                                <span class="checkbox-label">Python编程</span>
                             </label>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="current-skills">你目前已掌握的技能</label>
-                        <textarea id="current-skills" name="currentSkills" rows="3" placeholder="例如：有Python基础，了解HTML/CSS..."></textarea>
+                        <label for="userSkills">你目前已掌握的技能</label>
+                        <textarea id="userSkills" name="userSkills" rows="3" placeholder="例如：有Python基础，了解HTML/CSS..."></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="timeline">期望完成时间</label>
-                        <select id="timeline" name="timeline">
+                        <label for="timeFrame">期望完成时间</label>
+                        <select id="timeFrame" name="timeFrame">
                             <option value="4">4周</option>
                             <option value="6">6周</option>
                             <option value="8" selected>8周</option>
@@ -83,29 +477,529 @@
                     
                     <button type="submit" class="btn-submit">生成学习路径</button>
                 </form>
+                
+                <div class="debug-box" id="debugInfo">系统状态将显示在这里...</div>
             </section>
 
-            <section id="learning-path" class="section hidden">
+            <!-- 学习路径显示部分 -->
+            <section id="path-section" class="section hidden">
                 <div class="path-header">
-                    <button class="btn-back" id="btn-back">← 返回修改</button>
-                    <h2 id="project-title"></h2>
-                    <p id="project-description-display" class="project-desc"></p>
-                    <div id="project-skills" class="requirements"></div>
+                    <button class="btn-back" id="backBtn">← 返回修改</button>
+                    <h2 id="pathTitle"></h2>
+                    <p id="pathDesc" class="project-desc"></p>
+                    <div id="pathSkills" class="requirements"></div>
                 </div>
                 
-                <div class="progress-overview" id="progress-overview"></div>
+                <div class="progress-overview" id="progressOverview"></div>
                 
-                <div class="timeline" id="timeline">
-                </div>
+                <div class="timeline" id="timeline"></div>
             </section>
         </main>
 
         <footer>
-            <p>专为低年级计算机专业学生设计 | 所有学习资源均免费</p>
+            <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 20px;">专为低年级计算机专业学生设计 | 所有学习资源均免费</p>
         </footer>
     </div>
 
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+    <script>
+        // 防止缓存
+        if (window.location.href.indexOf('?') === -1) {
+            window.location.href = window.location.href + '?t=' + Date.now();
+        }
+        
+        // 学习资源数据
+        const LEARNING_RESOURCES = {
+            python: {
+                name: 'Python编程',
+                modules: [
+                    {
+                        name: 'Python基础入门',
+                        goal: '掌握Python语法基础，能够编写简单程序',
+                        resources: [
+                            {
+                                title: 'Python官方教程',
+                                type: '文档',
+                                platform: 'Python.org',
+                                url: 'https://docs.python.org/zh-cn/3/tutorial/',
+                                reason: '官方权威教程，内容全面系统，适合零基础入门',
+                                difficulty: 'easy',
+                                duration: '8小时'
+                            },
+                            {
+                                title: 'Python入门视频教程',
+                                type: '视频',
+                                platform: 'Bilibili',
+                                url: 'https://www.bilibili.com/video/BV1qW4y1a7fU',
+                                reason: '廖雪峰老师经典教程，讲解清晰易懂',
+                                difficulty: 'easy',
+                                duration: '10小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            llm: {
+                name: '大语言模型',
+                modules: [
+                    {
+                        name: '大语言模型基础',
+                        goal: '理解LLM的基本原理、能力和局限性',
+                        resources: [
+                            {
+                                title: '大语言模型综述',
+                                type: '文档',
+                                platform: '知乎',
+                                url: 'https://zhuanlan.zhihu.com/p/626575382',
+                                reason: '通俗易懂的LLM入门介绍，涵盖核心概念',
+                                difficulty: 'medium',
+                                duration: '3小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            rag: {
+                name: 'RAG知识库',
+                modules: [
+                    {
+                        name: 'RAG概念入门',
+                        goal: '理解RAG技术原理和应用场景',
+                        resources: [
+                            {
+                                title: 'RAG技术详解',
+                                type: '文档',
+                                platform: '知乎',
+                                url: 'https://zhuanlan.zhihu.com/p/673392898',
+                                reason: '通俗易懂的RAG原理解释',
+                                difficulty: 'medium',
+                                duration: '3小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            web: {
+                name: 'Web开发',
+                modules: [
+                    {
+                        name: 'HTML/CSS入门',
+                        goal: '学会网页结构和样式设计',
+                        resources: [
+                            {
+                                title: 'MDN Web教程',
+                                type: '文档',
+                                platform: 'MDN',
+                                url: 'https://developer.mozilla.org/zh-CN/docs/Learn',
+                                reason: '最权威的Web开发教程',
+                                difficulty: 'easy',
+                                duration: '10小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            database: {
+                name: '数据库',
+                modules: [
+                    {
+                        name: '数据库基础',
+                        goal: '学会使用MySQL/MongoDB',
+                        resources: [
+                            {
+                                title: 'MySQL教程',
+                                type: '文档',
+                                platform: '菜鸟教程',
+                                url: 'https://www.runoob.com/mysql/mysql-tutorial.html',
+                                reason: 'MySQL入门教程',
+                                difficulty: 'medium',
+                                duration: '6小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            api: {
+                name: 'API开发',
+                modules: [
+                    {
+                        name: 'HTTP与API基础',
+                        goal: '理解HTTP协议，学会使用requests库调用API',
+                        resources: [
+                            {
+                                title: 'HTTP协议详解',
+                                type: '文档',
+                                platform: 'MDN',
+                                url: 'https://developer.mozilla.org/zh-CN/docs/Web/HTTP',
+                                reason: 'MDN权威文档，全面介绍HTTP协议',
+                                difficulty: 'medium',
+                                duration: '3小时'
+                            }
+                        ]
+                    }
+                ]
+            },
+            deployment: {
+                name: '项目部署',
+                modules: [
+                    {
+                        name: '项目部署入门',
+                        goal: '将项目部署到云服务器，实现公网访问',
+                        resources: [
+                            {
+                                title: 'Streamlit Cloud部署',
+                                type: '文档',
+                                platform: 'Streamlit',
+                                url: 'https://docs.streamlit.io/streamlit-community-cloud/get-started',
+                                reason: '免费部署方案，适合学生项目',
+                                difficulty: 'easy',
+                                duration: '2小时'
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+        
+        // 技术依赖关系
+        const TECH_DEPENDENCIES = {
+            llm: ['python', 'api'],
+            rag: ['python', 'llm', 'database'],
+            agent: ['python', 'llm', 'api'],
+            cv: ['python'],
+            nlp: ['python'],
+            web: [],
+            database: [],
+            python: []
+        };
+        
+        // 存储管理
+        function clearAllStorage() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                // 清除cookies
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i];
+                    const eqPos = cookie.indexOf('=');
+                    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                }
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
+        function getStorageStatus() {
+            return {
+                localStorageLength: localStorage.length,
+                sessionStorageLength: sessionStorage.length,
+                cookiesLength: document.cookie.split(';').length
+            };
+        }
+        
+        // 学习路径生成
+        function createLearningPath(projectInfo) {
+            const { name, description, techFields, skills, timeline } = projectInfo;
+            
+            // 收集所有需要的技术领域（包括依赖）
+            const allTechFields = new Set(techFields);
+            techFields.forEach(field => {
+                const deps = TECH_DEPENDENCIES[field] || [];
+                deps.forEach(dep => allTechFields.add(dep));
+            });
+            
+            // 排序技术领域
+            const orderedFields = [];
+            const added = new Set();
+            
+            function addField(field) {
+                if (added.has(field)) return;
+                const deps = TECH_DEPENDENCIES[field] || [];
+                deps.forEach(dep => addField(dep));
+                if (!added.has(field)) {
+                    orderedFields.push(field);
+                    added.add(field);
+                }
+            }
+            
+            techFields.forEach(field => addField(field));
+            
+            // 添加部署阶段
+            if (!orderedFields.includes('deployment')) {
+                orderedFields.push('deployment');
+            }
+            
+            // 创建学习阶段
+            const stages = [];
+            const weeksPerStage = Math.max(1, Math.floor(timeline / 4));
+            const totalWeeks = parseInt(timeline);
+            
+            let currentStageModules = [];
+            let currentStageHours = 0;
+            const maxHoursPerStage = totalWeeks <= 4 ? 25 : totalWeeks <= 6 ? 30 : 35;
+            
+            orderedFields.forEach(field => {
+                const fieldData = LEARNING_RESOURCES[field];
+                if (!fieldData) return;
+                
+                fieldData.modules.forEach(module => {
+                    const moduleHours = module.resources.reduce((sum, r) => {
+                        const match = r.duration.match(/(\d+)/);
+                        return sum + (match ? parseInt(match[1]) : 2);
+                    }, 0);
+                    
+                    if (currentStageHours + moduleHours > maxHoursPerStage && currentStageModules.length > 0) {
+                        stages.push({
+                            stage: stages.length + 1,
+                            stageName: `第${stages.length + 1}阶段`,
+                            week: `第${stages.length * weeksPerStage + 1}-${Math.min((stages.length + 1) * weeksPerStage, totalWeeks)}周`,
+                            duration: `约${currentStageHours}小时`,
+                            stageGoal: `掌握${currentStageModules.map(m => m.name).join('、')}相关知识`,
+                            modules: currentStageModules
+                        });
+                        currentStageModules = [];
+                        currentStageHours = 0;
+                    }
+                    
+                    currentStageModules.push(module);
+                    currentStageHours += moduleHours;
+                });
+            });
+            
+            if (currentStageModules.length > 0) {
+                stages.push({
+                    stage: stages.length + 1,
+                    stageName: `第${stages.length + 1}阶段`,
+                    week: `第${stages.length * weeksPerStage + 1}-${totalWeeks}周`,
+                    duration: `约${currentStageHours}小时`,
+                    stageGoal: `掌握${currentStageModules.map(m => m.name).join('、')}相关知识`,
+                    modules: currentStageModules
+                });
+            }
+            
+            return {
+                id: 'path_' + Date.now(),
+                name: name,
+                description: description,
+                techFields: techFields,
+                requirements: Array.from(allTechFields).map(f => LEARNING_RESOURCES[f]?.name || f),
+                currentSkills: skills,
+                timeline: totalWeeks,
+                stages: stages
+            };
+        }
+        
+        // 应用状态
+        let currentPath = null;
+        
+        // 初始化
+        function initApp() {
+            // 清除所有存储
+            const cleared = clearAllStorage();
+            
+            // 显示调试信息
+            updateDebugInfo();
+            
+            // 设置事件监听器
+            setupEventListeners();
+        }
+        
+        function updateDebugInfo() {
+            const debugInfo = document.getElementById('debugInfo');
+            const status = getStorageStatus();
+            
+            let info = '=== 系统状态 ===\n';
+            info += '页面加载时间: ' + new Date().toLocaleString() + '\n';
+            info += 'URL: ' + window.location.href + '\n';
+            info += 'localStorage 项目数: ' + status.localStorageLength + '\n';
+            info += 'sessionStorage 项目数: ' + status.sessionStorageLength + '\n';
+            info += 'Cookies 数量: ' + status.cookiesLength + '\n';
+            
+            debugInfo.textContent = info;
+        }
+        
+        function setupEventListeners() {
+            // 表单提交
+            const form = document.getElementById('project-form');
+            form.addEventListener('submit', handleFormSubmit);
+            
+            // 返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', goBack);
+        }
+        
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // 获取表单数据
+            const form = event.target;
+            const name = form.projName.value.trim();
+            const description = form.projDesc.value.trim();
+            const techFields = Array.from(form.querySelectorAll('input[name="tech"]:checked'))
+                .map(cb => cb.value);
+            const skills = form.userSkills.value.trim();
+            const timeline = form.timeFrame.value;
+            
+            // 验证
+            if (techFields.length === 0) {
+                alert('请至少选择一个技术领域');
+                return;
+            }
+            
+            // 创建项目信息对象
+            const projectInfo = {
+                name: name,
+                description: description,
+                techFields: techFields,
+                skills: skills,
+                timeline: timeline
+            };
+            
+            // 生成学习路径
+            currentPath = createLearningPath(projectInfo);
+            
+            // 显示学习路径
+            showLearningPath(currentPath);
+        }
+        
+        function showLearningPath(path) {
+            // 切换显示
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('path-section').classList.remove('hidden');
+            
+            // 填充基本信息
+            document.getElementById('pathTitle').textContent = path.name;
+            document.getElementById('pathDesc').textContent = path.description;
+            
+            // 填充技能要求
+            const skillsHtml = `
+                <h4>需要掌握的技能</h4>
+                <ul>
+                    ${path.requirements.map(req => `<li>${req}</li>`).join('')}
+                </ul>
+                ${path.currentSkills ? `<p class="current-skills"><strong>已掌握技能：</strong>${path.currentSkills}</p>` : ''}
+            `;
+            document.getElementById('pathSkills').innerHTML = skillsHtml;
+            
+            // 渲染时间线
+            renderTimeline(path);
+            
+            // 渲染进度
+            renderProgress(path);
+        }
+        
+        function renderTimeline(path) {
+            const timeline = document.getElementById('timeline');
+            const stages = path.stages;
+            
+            timeline.innerHTML = stages.map((stage, index) => {
+                return `
+                    <div class="stage">
+                        <div class="stage-header" onclick="toggleStage(${index})"><h3>${stage.stageName}</h3>
+                            <div class="stage-info">
+                                <span class="stage-week">${stage.week}</span>
+                                <span class="stage-duration">预计${stage.duration}</span>
+                                <button class="stage-toggle">▼</button>
+                            </div>
+                        </div>
+                        <div class="stage-content">
+                            <div class="stage-goal">
+                                <strong>阶段目标：</strong>${stage.stageGoal}
+                            </div>
+                            <div class="module-list">
+                                ${stage.modules.map(module => renderModule(module)).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderModule(module) {
+            return `
+                <div class="module">
+                    <h4>${module.name}</h4>
+                    <p class="module-goal">${module.goal}</p>
+                    <div class="resource-list">
+                        ${module.resources.map(resource => renderResource(resource)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderResource(resource) {
+            const difficultyText = {
+                'easy': '入门',
+                'medium': '进阶',
+                'hard': '高级'
+            }[resource.difficulty];
+            
+            const typeIcon = {
+                '文档': '📄',
+                '视频': '🎬',
+                '教程': '📖',
+                '项目': '🔧'
+            }[resource.type] || '📚';
+            
+            return `
+                <div class="resource">
+                    <div class="resource-icon">${typeIcon}</div>
+                    <div class="resource-info">
+                        <div class="resource-title">
+                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer">${resource.title}</a>
+                        </div>
+                        <div class="resource-meta">
+                            <span class="resource-tag">${resource.type}</span>
+                            <span class="resource-tag">${resource.platform}</span>
+                            <span class="resource-tag">${difficultyText}</span>
+                            <span class="resource-tag">${resource.duration}</span>
+                        </div>
+                        <p class="resource-reason">${resource.reason}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderProgress(path) {
+            const progressOverview = document.getElementById('progressOverview');
+            const totalResources = path.stages.reduce((total, stage) => {
+                return total + stage.modules.reduce((count, module) => {
+                    return count + module.resources.length;
+                }, 0);
+            }, 0);
+            
+            progressOverview.innerHTML = `
+                <h4>总体学习进度</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <p class="progress-text">已完成 0/${totalResources} 个学习资源 (0%)</p>
+            `;
+        }
+        
+        function toggleStage(index) {
+            const stage = document.querySelectorAll('.stage-content')[index];
+            const toggle = document.querySelectorAll('.stage-toggle')[index];
+            
+            if (stage.classList.contains('collapsed')) {
+                stage.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+            } else {
+                stage.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+            }
+        }
+        
+        function goBack() {
+            document.getElementById('path-section').classList.add('hidden');
+            document.getElementById('input-section').classList.remove('hidden');
+            updateDebugInfo();
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
