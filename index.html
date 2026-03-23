@@ -716,6 +716,38 @@
             }
         }
         
+        // 清除项目相关存储，但保留API密钥
+        function clearProjectStorage() {
+            try {
+                // 保存API密钥
+                const apiKey = localStorage.getItem('ai_api_key');
+                
+                // 清除所有存储
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // 恢复API密钥
+                if (apiKey) {
+                    localStorage.setItem('ai_api_key', apiKey);
+                }
+                
+                // 清除cookies（如果需要）
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i];
+                    const eqPos = cookie.indexOf('=');
+                    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    // 不清除可能与API密钥相关的cookie
+                    if (!name.includes('api') && !name.includes('key')) {
+                        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                    }
+                }
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
         function getStorageStatus() {
             return {
                 localStorageLength: localStorage.length,
@@ -828,8 +860,8 @@
         
         // 初始化
         function initApp() {
-            // 清除所有存储
-            const cleared = clearAllStorage();
+            // 清除项目相关存储，但保留API密钥
+            clearProjectStorage();
             
             // 显示调试信息
             updateDebugInfo();
